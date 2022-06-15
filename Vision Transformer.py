@@ -3,8 +3,7 @@ import torch.nn as nn
 
 # Patch Embedding
 class PatchEmbed(nn.Module):
-    def __init__(self, image_size, patch_size, in_channels=3, embed_dim=768):
-
+    
         # Parameters:
         # image_size : Size of the image (48).
         # patch_size : Size of the patch (16).
@@ -13,6 +12,7 @@ class PatchEmbed(nn.Module):
         # Attributes:
         # num_patches : Number of patches inside of our image.
     
+    def __init__(self, image_size, patch_size, in_channels=3, embed_dim=768):
         super().__init__()
         self.image_size = image_size
         self.patch_size = patch_size
@@ -29,8 +29,7 @@ class PatchEmbed(nn.Module):
 
 # Multi Head Attention
 class Attention(nn.Module):
-    def __init__(self, dim, num_heads=12, qkv_bias=True, attn_p=0., proj_p=0.):
-
+    
         # Parameters:
         # dim : Embedding dimension.
         # num_heads : Number of attention heads.
@@ -44,11 +43,12 @@ class Attention(nn.Module):
         # proj : Linear mapping that takes in the concatenated output of all attention heads and maps it into a new space.
         # attn_drop, proj_drop : Dropout layers.
 
+    def __init__(self, dim, num_heads=12, qkv_bias=True, attn_p=0., proj_p=0.):
         super().__init__()
         self.dim = dim
         self.num_heads = num_heads
-        self.head_dim = dim // num_heads
-        self.scale = self.head_dim ** -0.5
+        head_dim = dim // num_heads
+        self.scale = head_dim ** -0.5
         
         self.qkv = nn.Linear(dim, dim * 3, bias=qkv_bias)
         self.attn_drop = nn.Dropout(attn_p)
@@ -88,12 +88,6 @@ class MLP(nn.Module):
     # hidden_size : Number of nodes in the hidden layer.
     # output_size : Number of output features.
     # p : Dropout probability.
-
-    # Attributes
-    # fc : The First linear layer.
-    # act : GELU activation function.
-    # fc2 : The second linear layer.
-    # drop : Dropout layer.
 
     def __init__(self, input_size, hidden_size, output_size, p=0.):
         super().__init__()
